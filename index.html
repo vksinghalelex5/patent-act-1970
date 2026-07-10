@@ -186,7 +186,7 @@
 
     if (section && patentActData[section]) {
       const entry = patentActData[section];
-      resultBox.innerHTML = `<strong>Section ${section} - ${entry.title}:</strong> ${entry.Explaination}`;
+      resultBox.innerHTML = `<strong>Section ${section} - ${entry.title}:</strong> ${entry.text}`;
     } else if (section) {
       resultBox.innerHTML = 'No results found for that section number.';
     } else if (keyword) {
@@ -197,7 +197,7 @@
           entry.title.toLowerCase().includes(keyword) ||
           entry.text.toLowerCase().includes(keyword)
         ) {
-          result += `<strong>Section ${key} - ${entry.title}:</strong> ${entry.Explaination}<br><br>`;
+          result += `<strong>Section ${key} - ${entry.title}:</strong> ${entry.text}<br><br>`;
         }
       }
       resultBox.innerHTML = result || 'No results found for keyword.';
