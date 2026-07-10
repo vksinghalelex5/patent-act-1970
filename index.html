@@ -126,8 +126,7 @@
     "2": {
       title: "Definitions",
       text: "In this Act, unless the context otherwise requires hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh."
-      Extent: "It applies throughout India."
-      Commencement: "The Act did not start on the day it was passed. Different parts of the Act came into force on dates decided by the Central Government through official notifications."
+
     },
     "25": {
       title: "Opposition to grant of patent",
@@ -187,7 +186,7 @@
 
     if (section && patentActData[section]) {
       const entry = patentActData[section];
-      resultBox.innerHTML = `<strong>Section ${section} - ${entry.title}:</strong> ${entry.text}`;
+      resultBox.innerHTML = `<strong>Section ${section} - ${entry.title}:</strong> ${entry.Explaination}`;
     } else if (section) {
       resultBox.innerHTML = 'No results found for that section number.';
     } else if (keyword) {
@@ -198,7 +197,7 @@
           entry.title.toLowerCase().includes(keyword) ||
           entry.text.toLowerCase().includes(keyword)
         ) {
-          result += `<strong>Section ${key} - ${entry.title}:</strong> ${entry.text}<br><br>`;
+          result += `<strong>Section ${key} - ${entry.title}:</strong> ${entry.Explaination}<br><br>`;
         }
       }
       resultBox.innerHTML = result || 'No results found for keyword.';
