@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+mkdocs<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -6,7 +6,7 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #ffffff;
+      background: #f0f2f5;
       margin: 0;
       padding: 0;
       display: flex;
@@ -23,28 +23,31 @@
       font-weight: bold;
       margin-bottom: 20px;
       text-align: center;
+      color: #333;
     }
     .login-box, .search-box, .assistant-box {
       width: 100%;
-      max-width: 600px;
-      padding: 20px;
+      max-width: 700px;
+      padding: 30px;
       border: 1px solid #ddd;
-      border-radius: 8px;
-      background-color: #f9f9f9;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      border-radius: 12px;
+      background-color: #ffffff;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
       margin: 20px;
+      box-sizing: border-box;
     }
     input[type="text"],
     input[type="password"] {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       margin: 10px 0;
       border-radius: 6px;
       border: 1px solid #ccc;
       font-size: 16px;
+      box-sizing: border-box;
     }
     button {
-      padding: 10px 15px;
+      padding: 12px 20px;
       font-size: 16px;
       background-color: #007bff;
       color: white;
@@ -52,6 +55,10 @@
       border-radius: 6px;
       cursor: pointer;
       margin: 5px;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background-color: #0056b3;
     }
     .upload-label {
       background: #e6f7ff;
@@ -60,28 +67,47 @@
       border: 1px dashed #007bff;
       cursor: pointer;
       font-size: 14px;
+      display: inline-block;
     }
     #loginError {
-      color: red;
+      color: #dc3545;
       font-size: 14px;
-    }
-    #resultBox {
+      text-align: center;
       margin-top: 10px;
-      font-size: 14px;
-      background: #fff;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
+    }
+    .result-box {
+      margin-top: 20px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #444;
+      background: #fafafa;
+      padding: 20px;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      max-height: 400px;
+      overflow-y: auto;
     }
     .or-divider {
       text-align: center;
       font-weight: bold;
-      margin: 10px 0;
+      margin: 20px 0;
+      color: #777;
+      position: relative;
+    }
+    h3 {
+      margin: 15px 0 5px 0;
+      font-size: 16px;
+      color: #222;
+    }
+    .legal-paragraph {
+      margin-bottom: 12px;
+      text-align: justify;
     }
   </style>
 </head>
 <body>
 
+<!-- LOGIN PAGE -->
 <div id="loginPage" class="login-box">
   <div class="title">LEGAL PC ASSISTANT LOGIN</div>
   <input type="text" id="username" placeholder="Username">
@@ -92,50 +118,334 @@
   <div id="loginError"></div>
 </div>
 
+<!-- SEARCH PAGE -->
 <div id="searchPage" class="search-box hidden">
   <div class="title">Search Patent Act - Section or Keyword</div>
   <h3>Search by Section</h3>
   <input type="text" id="sectionInput" placeholder="Enter Section Number (e.g. 2, 25, 48)">
   <div class="or-divider">OR</div>
   <h3>Search by Keyword</h3>
-  <input type="text" id="keywordInput" placeholder="Enter Keyword (e.g. invention, grant, secrecy)">
+  <input type="text" id="keywordInput" placeholder="Enter Keyword (e.g. invention, opponent, exclusive)">
   <div style="text-align: center;">
     <button onclick="goToLogin()">Back</button>
     <button onclick="showSearchResult()">Result</button>
     <button onclick="goToAssistant()">Next</button>
   </div>
-  <div id="resultBox"></div>
+  <div id="searchResultBox" class="result-box">Search results or specific legal text blocks will render down here...</div>
 </div>
 
+<!-- ASSISTANT/CHAT PAGE -->
 <div id="assistantPage" class="assistant-box hidden">
   <div class="title">LEGAL PC ASSISTANT</div>
-  <div style="margin-bottom: 10px;">
+  <div style="margin-bottom: 15px; text-align: center;">
     <label for="file-upload" class="upload-label">📎 Upload file/image</label>
     <input type="file" id="file-upload" multiple style="display:none;">
   </div>
-  <input type="text" id="chatInput" placeholder="Ask anything here...">
+  <input type="text" id="chatInput" placeholder="Ask anything here... (e.g., what is patent)">
   <div style="text-align: center;">
     <button onclick="goToSearch()">Back</button>
     <button onclick="sendMessage()">Send</button>
   </div>
-  <div id="resultBox"></div>
+  <div id="chatResultBox" class="result-box">Ask a question above to begin our legal consultation.</div>
 </div>
 
 <script>
+  // Comprehensive Patent Act database (~1000 words across structured sections)
   const patentActData = {
+    "1": {
+      title: "Short title, extent and commencement",
+      text: [
+        `Section 1 of the Indian Patents Act, 1970 simply introduces the law by stating its official name, where it applies and how it starts working. 
+
+The law breaks this introduction down into three basic parts: 
+
+1. The Name (Short Title) 
+
+What it says: This law is called The Patents Act, 1970. It gives the law its official title so people know what to call it. 
+
+2. The Location (Extent) 
+
+What it says: It extends to the whole of India. The rules in this law apply to every single part and state of India. 
+
+3. The Start Date (Commencement): 
+
+It comes into force when the Central Government announces it in the Official Gazette. The government chooses when the law officially begins. They can also choose to start different sections of the law on different dates.`
+      ]
+    },
+
     "2": {
       title: "Definitions",
-      text: "In this Act, unless the context otherwise requires hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh."
+      text: [ 
+        `Section 2 of patent act: Section 2 of the Indian Patents Act, 1970 is essentially the dictionary chapter of the law. It defines the official meaning of key legal terms so everyone is on the same page when reading the rest of the Act. 
 
+The Core Definitions: 
+
+Invention [Section 2(1)(j)]: A brand-new product or process. It must do two things: it must feature an innovative step forward and it must have a practical use in the real world. 
+
+New Invention [Section 2(1)(l)]: Technology that has never been published in a document or publicly used anywhere in the world before. It cannot already be common public knowledge. 
+
+Inventive Step [Section 2(1)(ja)]: The feature making your invention technically advanced or economically valuable compared to what already exists. Crucially, it cannot be obvious to an average expert in that field. 
+
+Capable of Industrial Application [Section 2(1)(ac)]: The item or process can be physically manufactured or used in an actual industry. Theoretical ideas that cannot be made do not qualify.
+
+Patent [Section 2(1)(m)]: The official certificate of exclusive rights granted by the government for an invention under this specific law. 
+
+Patentee [Section 2(1)(p)]: The person currently recorded in the official government registry as the owner of the patent. 
+
+Controller [Section 2(1)(b)]: The head officer in charge of managing the Patent Office and approving or rejecting patent applications.`
+      ]
     },
-    "25": {
-      title: "Opposition to grant of patent",
-      text: "Where an application for a patent has been published..."
+
+    "3": {
+      title: "What are not inventions",
+      text: [
+       `Section 3 of patent act: 
+
+Section 3 of the Indian Patents Act, 1970 explains what cannot be patented in India. Even if an idea is completely new and useful, the government will refuse to grant a patent if it falls under any of the categories listed in this section. The primary goal of this rule is to protect public health, environment, and traditional knowledge from being unfairly locked away by private companies. 
+
+Here is a simplified summary of what you cannot patent under Section 3: [1] 
+
+🚫 Absurd or Dangerous Ideas 
+
+  3(a): Frivolous ideas. Inventions that defy well-established laws of nature, like a perpetual motion machine. 
+
+  3(b): Harmful items. Anything that breaks public order, promotes immorality, or hurts human, animal, plant life, or the environment. [1, 2, 3, 4, 5] 
+
+🚫 Discoveries of Nature 
+
+  3(c): Scientific theories. Simply discovering a pre-existing natural law, abstract theory, or wild living creature. 
+
+  3(d): Same old chemicals. Modifying an existing drug or chemical without making it significantly more effective. 
+
+🚫 Simple Mixes and Arrangements 
+
+  3(e): Simple mixtures. Mixing ingredients together without creating a new, combined chemical reaction. 
+
+  3(f): Regrouping items. Sticking two independent working tools together, like putting a clock onto a radio. 
+
+🚫 Farming and Healthcare 
+
+  3(h): Agriculture methods. Farming, soil treatment, or crop cultivation techniques. 
+
+  3(i): Medical treatments. Methods used by doctors to cure, diagnose, or operate on humans or animals. 
+
+🚫 Biology, Software, and Culture 
+
+  3(j): Plants and animals. Whole plants, seeds, animal breeds, or natural biological processes. 
+
+  3(k): Code and math. Pure math formulas, business methods, or computer programs on their own. 
+
+  3(l): Art and media. Literary works, music, plays, movies, or television show formats. 
+
+🚫 Miscellaneous Exclusions 
+
+  3(m): Games and rules. Schemes, mental rule systems, or instructions for playing a game. 
+
+  3(n): Displays. Presenting plain text data or formatting information visually. 
+
+  3(o): Microchips. Layout designs for integrated electronic circuits. 
+
+  3(p): Traditional knowledge. Remedies or practices already known by indigenous communities, such as using turmeric to heal wounds.`
+
+      ]
     },
-    "48": {
-      title: "Rights of patentees",
-      text: "Subject to the other provisions contained in this Act..."
-    }
+
+  "4": {
+      title: "Inventions relating to nuclear energy",
+      text: [
+        `Section 4 of the Indian Patents Act, 1970 originally banned all patents for inventions related to atomic (nuclear) energy. However, a major legal update through the SHANTI Act, 2025 changed this rule to allow nuclear patents under strict government conditions.
+Sustainable Harnessing and Advancement of Nuclear Energy for transforming India Act, 2025. `
+      ]
+    },
+
+
+ "5": {
+
+       title: "Omitted",
+       text:[`Section 5 of the Indian Patents Act, 1970 was completely deleted (omitted) in 2005.`
+      ]
+    },
+
+
+ "6": {
+      title: "Persons entitled to apply for patents",
+      text: [
+        `Section 6 of the Indian Patents Act, 1970 rules who is legally allowed to apply for a patent. In simple terms, it states that only three categories of people can file a patent application. 
+
+There are three eligible categories: 
+
+The Original Inventor: The actual person who created or discovered the invention. The law calls them the "true and first inventor. 
+
+The Buyer/Receiver of Rights: A person or company to whom the inventor has legally transferred their rights. The law calls this person or organization an "assignee". 
+
+The Legal Heir: If the inventor passes away before applying, their official legal representative or family heir can apply on their behalf.`
+      ]
+    },
+
+"7": {
+      title: "Form of application",
+      text: [
+        `Section 7 of the Indian Patents Act, 1970 explains the rules for how you must format and submit a patent application. 
+
+ One invention per application: Each application can only cover one specific invention. 
+
+ Official form and location: You must use the official format (Form 1) and submit it to the Indian Patent Office. 
+
+ International applications: Global filings made via the Patent Cooperation Treaty (PCT) that include India are counted as Indian applications. 
+
+ Proof of rights: If someone else is applying on behalf of the creator (like a company or an buyer), they must submit legal proof of their right to apply. 
+
+Section 7(1) — The Basic Rule
+Every application must be submitted using the correct form to the Patent Office. It can only be for one invention. You cannot bundle multiple, unrelated ideas into a single application. 
+
+Section 7(1A) & 7(1B) — International Apps
+If you file an international application through the Patent Cooperation Treaty (PCT) and choose India as one of your target countries, it will be treated exactly like a normal Indian application. The official international filing date becomes your official filing date in India. 
+
+Section 7(2) — Proof of Ownership
+If you are not the actual inventor but have bought or assigned the rights to the invention, you must prove it. You must provide official proof (like an assignment deed) when you apply, or within a specific legal timeframe. 
+
+Section 7(3) — Declaration of Truth
+The application must state clearly that you have the invention in your possession. It must name the true and original inventor. If the applicant and the inventor are different people, the applicant must sign a declaration confirming that they believe the named person is indeed the original creator. 
+
+Section 7(4) — Technical Documents
+Every standard application must include a detailed description of the invention. This is submitted as a provisional specification (a temporary rough draft) or a complete specification (the final detailed breakdown).`
+      ]
+    },
+
+"8": {
+      title: "Information and Undertaking Regarding Foreign Application",
+      text: [
+        `Section 8 of patent act: 
+
+Section 8 of the Indian Patents Act, 1970 mandates that any person applying for a patent in India must completely disclose all related patent applications filed in foreign countries for the same or a very similar invention. This law forces transparency so the Indian Patent Office can check how other nations are treating the same invention before giving it protection in India. It is divided into two primary sub-sections that outline the applicant's duties and the government's power. 
+
+Section 8(1): The Duty of Statement and Undertaking 
+
+This sub-section says that if you are applying for an Indian patent, and you (or someone related to you) are also trying to get a patent for the same invention in another country, you have a strict legal duty to tell the Indian Patent Office. You must do this by filing a specific document known as Form 3 either when you apply or within a set timeframe. This rule breaks down into two specific parts: 
+
+Section 8(1)(a): You must give a clear, detailed statement listing every foreign country where you filed a similar patent application, along with key details like application numbers, filing dates, and their current status. 
+
+Section 8(1)(b): You must sign an ongoing promise (an undertaking) stating that you will continuously update the Indian Patent Office about any new, similar foreign applications you file in the future, keeping them informed all the way until your Indian patent is officially granted or rejected. 
+
+Section 8(2): The Controller’s Power to Ask for More Details
+
+
+This sub-section gives the Controller (the head of the Indian Patent Office) the power to step in at any point before your patent is approved or refused. Even if you already provided information under the first part, the Controller can demand that you hand over precise, extra data about how your foreign application is being processed. This typically means you must share specific foreign documents, such as search reports, official objections, lists of rejected claims, or approval updates from international patent offices.`
+      ]
+    },
+
+"9": {
+      title: "Provisional and Complete Specification",
+      text: [
+        `Section 9 of the Patents Act, 1970: Provisional and Complete Specifications 
+
+This section explains when and how an inventor must file their detailed invention documents (specifications) with the patent office. 
+
+Subsection 1: Filing the Complete Specification 
+
+  Provisional First: You can file a quick, initial summary called a Provisional Specification first. 
+
+  12-Month Deadline: You must file the detailed, final version called a Complete Specification within 12 months of that first filing. 
+
+  Consequence: If you miss this 12-month deadline, the patent office will cancel your application. 
+
+
+
+Subsection 2: Multiple Provisional Applications 
+
+ Combining Ideas: If you file multiple provisional applications for closely related inventions, you can combine them. 
+
+ Single Final Document: You can file one single Complete Specification for all of them. 
+
+ Time Limit: You must file this combined document within 12 months from the date of the very first provisional application you filed. 
+
+Subsection 3: Treating a Complete Specification as Provisional. 
+
+ The Request: If you file a Complete Specification first, you can ask the patent office to change its status. 
+
+ Downgrade: You can request to treat it as a Provisional Specification instead. 
+
+ Time Limit: You must make this request within 12 months from the date you filed that original application. 
+
+
+Subsection 4: Splitting or Replacing Applications 
+
+ Post-dating: If you file a Complete Specification, the Controller (patent officer) can allow you to cancel it. 
+
+ New Start Date: You can instead file a fresh Complete Specification later. 
+
+ The Rule: The patent office will then change your official application date to this new filing date.`
+
+      ]
+    },
+
+"10": {
+      title: "Content of Specifications",
+      text: [
+        `Section 10 of the Indian Patents Act, 1970 outlines exactly what information must be included in a patent document (specification). 
+
+Section 10(1) – The Title 
+
+  Every patent application must include a written description of the invention. 
+
+  It must start with a clear and direct title that explains what the invention is. 
+
+Section 10(2) – The Drawings 
+
+  You can include drawings or diagrams to help explain the invention. 
+
+  If the Patent Controller asks for drawings, you must provide them. 
+
+  These drawings are officially treated as part of the invention's description. 
+
+Section 10(3) – Models or Samples 
+
+  If a description cannot easily explain the invention, you may need to provide samples or models. 
+
+  However, these models will not become part of the official public description. 
+
+Section 10(4) – What a Complete Specification Must Have 
+
+A Complete Specification (the final, detailed application) must include these four things: 
+
+  (a) Full Description: You must fully explain the invention, how it works, and how to use or make it. 
+
+  (b) Best Method: You must reveal the best known way to build or perform the invention. 
+
+  (c) The Claims: The document must end with clear "claims" that define the exact legal boundaries of what you want to protect. 
+
+  (d) Abstract: You must include a short summary (abstract) providing quick technical info about the invention. 
+
+Important Conditions (Provisos) under Section 10(4): 
+
+  Abstract Changes: The Controller has the right to edit your abstract to make it clearer for the public. [1] 
+
+Biological Materials: If your invention uses a biological material (like bacteria or a virus) that is not publicly available, you must: 
+
+  Deposit the sample at an approved International Depository Authority before or on the filing date. 
+
+  Disclose the name, address of the facility, and deposit details in your application within three months. 
+
+  Clearly state where the biological material came from geographically (source and origin). 
+
+Section 10(5) – Rules for the Claims 
+
+The legal claims mentioned in Section 10(4)(c) must follow these rules: 
+
+  They must relate to only one invention or a single unified concept. 
+
+  They must be clear and short. 
+
+  They must be fully justified and based on what you already described in the main text. 
+
+Section 10(6) – Declaration of Inventors 
+
+  You can submit a declaration of who the true and original inventors are. 
+
+  This can be done either when filing the complete specification or within a set period after filing.`
+      ]
+    },
+
   };
 
   const faqs = {
@@ -146,10 +456,12 @@
     "what are secrecy directions": "Under Section 35, secrecy directions are issued when an invention is relevant for defense purposes."
   };
 
+  // Navigation & Login Logic
   function handleLogin() {
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
     const error = document.getElementById('loginError');
+    
     if (username === 'admin' && password === 'admin123') {
       document.getElementById('loginPage').classList.add('hidden');
       document.getElementById('searchPage').classList.remove('hidden');
@@ -174,49 +486,71 @@
     document.getElementById('assistantPage').classList.remove('hidden');
   }
 
+  // Helper function to build paragraph layout for large blocks of text
+  function formatLegalText(title, paragraphsArray, highlightKeyword = '') {
+    let htmlContent = `<h3>${title}</h3>`;
+    paragraphsArray.forEach(pText => {
+      let styledText = pText;
+      if (highlightKeyword) {
+        const regex = new RegExp(`(${highlightKeyword})`, 'gi');
+        styledText = pText.replace(regex, '<mark style="background-color: #ffeb3b; color: #000;">$1</mark>');
+      }
+      htmlContent += `<div class="legal-paragraph">${styledText}</div>`;
+    });
+    return htmlContent;
+  }
+
+  // Search Logic
   function showSearchResult() {
     const section = document.getElementById('sectionInput').value.trim();
     const keyword = document.getElementById('keywordInput').value.trim().toLowerCase();
-    const resultBox = document.getElementById('searchPage').querySelector('#resultBox');
+    const resultBox = document.getElementById('searchResultBox');
+
+    resultBox.innerHTML = '';
 
     if (section && keyword) {
-      resultBox.innerHTML = 'Please use only one field: Section OR Keyword.';
+      resultBox.innerHTML = '<span style="color: #d32f2f; font-weight: bold;">⚠️ Please search using only one field: Section OR Keyword.</span>';
       return;
     }
 
-    if (section && patentActData[section]) {
-      const entry = patentActData[section];
-      resultBox.innerHTML = `<strong>Section ${section} - ${entry.title}:</strong> ${entry.text}`;
-    } else if (section) {
-      resultBox.innerHTML = 'No results found for that section number.';
+    if (section) {
+      if (patentActData[section]) {
+        const entry = patentActData[section];
+        resultBox.innerHTML = formatLegalText(`Section ${section} - ${entry.title}`, entry.text);
+      } else {
+        resultBox.innerHTML = '❌ No formal legal records found matching that statutory section number.';
+      }
     } else if (keyword) {
-      let result = '';
+      let combinedHTML = '';
       for (let key in patentActData) {
         const entry = patentActData[key];
-        if (
-          entry.title.toLowerCase().includes(keyword) ||
-          entry.text.toLowerCase().includes(keyword)
-        ) {
-          result += `<strong>Section ${key} - ${entry.title}:</strong> ${entry.text}<br><br>`;
+        const titleMatch = entry.title.toLowerCase().includes(keyword);
+        const textMatch = entry.text.some(p => p.toLowerCase().includes(keyword));
+
+        if (titleMatch || textMatch) {
+          combinedHTML += formatLegalText(`Section ${key} - ${entry.title}`, entry.text, keyword) + '<hr style="border:0; border-top: 1px dashed #ccc; margin: 15px 0;">';
         }
       }
-      resultBox.innerHTML = result || 'No results found for keyword.';
+      resultBox.innerHTML = combinedHTML || '❌ No matching legal clauses or references found for that keyword query.';
     } else {
-      resultBox.innerHTML = 'Please enter either a section number or a keyword.';
+      resultBox.innerHTML = 'ℹ️ Please enter either a target section number or an explicit keyword phrase.';
     }
   }
 
+  // Chatbot Assistant Logic
   function sendMessage() {
-    const message = document.getElementById('chatInput').value.trim().toLowerCase();
-    const resultBox = document.getElementById('assistantPage').querySelector('#resultBox');
+    const chatInput = document.getElementById('chatInput');
+    const message = chatInput.value.trim().toLowerCase();
+    const resultBox = document.getElementById('chatResultBox');
+    
     if (message) {
       const answer = faqs[message];
-      resultBox.innerHTML = answer ? `<strong>Answer:</strong> ${answer}` : 'Sorry, I do not have an answer to that question yet.';
-      document.getElementById('chatInput').value = '';
+      resultBox.innerHTML = answer ? `<strong>Answer:</strong> ${answer}` : '🤖 Sorry, I do not have an answer to that specific legal inquiry inside my basic FAQ framework yet.';
+      chatInput.value = '';
     } else {
-      alert("Please enter a message before sending.");
+      alert("Please type an input query message before attempting to dispatch.");
     }
   }
 </script>
 </body>
-</html>
+</html> gh-deploy
