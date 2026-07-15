@@ -1,561 +1,431 @@
-mkdocs<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>LEGAL PC ASSISTANT</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Indian Patents Act, 1970 - Plain English Navigator</title>
   <style>
+    :root {
+      --primary-color: #1e3a8a;
+      --secondary-color: #3b82f6;
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --text-color: #1e293b;
+      --border-color: #e2e8f0;
+    }
     body {
-      font-family: Arial, sans-serif;
-      background: #f0f2f5;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
       margin: 0;
       padding: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
       min-height: 100vh;
     }
     .hidden {
-      display: none;
+      display: none !important;
+    }
+    .container {
+      width: 100%;
+      max-width: 900px;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      padding: 30px;
+      margin-top: 20px;
+      box-sizing: border-box;
     }
     .title {
-      font-size: 24px;
-      font-weight: bold;
-      margin-bottom: 20px;
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--primary-color);
       text-align: center;
-      color: #333;
+      margin-bottom: 25px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
-    .login-box, .search-box, .assistant-box {
-      width: 100%;
-      max-width: 700px;
-      padding: 30px;
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      background-color: #ffffff;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-      margin: 20px;
-      box-sizing: border-box;
+    .subtitle {
+      font-size: 14px;
+      color: #64748b;
+      text-align: center;
+      margin-top: -20px;
+      margin-bottom: 30px;
     }
-    input[type="text"],
-    input[type="password"] {
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    input[type="text"], input[type="password"] {
       width: 100%;
       padding: 12px;
-      margin: 10px 0;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      font-size: 15px;
+      transition: all 0.2s;
       box-sizing: border-box;
     }
+    input[type="text"]:focus, input[type="password"]:focus {
+      outline: none;
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 20px;
+    }
     button {
-      padding: 12px 20px;
-      font-size: 16px;
-      background-color: #007bff;
+      padding: 12px 24px;
+      font-size: 15px;
+      font-weight: 600;
+      background-color: var(--primary-color);
       color: white;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
-      margin: 5px;
-      transition: background 0.2s;
+      transition: all 0.2s;
     }
     button:hover {
-      background-color: #0056b3;
+      background-color: var(--secondary-color);
     }
-    .upload-label {
-      background: #e6f7ff;
-      padding: 10px 15px;
-      border-radius: 6px;
-      border: 1px dashed #007bff;
-      cursor: pointer;
-      font-size: 14px;
-      display: inline-block;
+    button.secondary {
+      background-color: #64748b;
     }
-    #loginError {
-      color: #dc3545;
-      font-size: 14px;
-      text-align: center;
-      margin-top: 10px;
-    }
-    .result-box {
-      margin-top: 20px;
-      font-size: 15px;
-      line-height: 1.6;
-      color: #444;
-      background: #fafafa;
-      padding: 20px;
-      border: 1px solid #e0e0e0;
-      border-radius: 6px;
-      max-height: 400px;
-      overflow-y: auto;
+    button.secondary:hover {
+      background-color: #475569;
     }
     .or-divider {
       text-align: center;
       font-weight: bold;
-      margin: 20px 0;
-      color: #777;
+      margin: 25px 0;
+      color: #94a3b8;
       position: relative;
     }
-    h3 {
-      margin: 15px 0 5px 0;
-      font-size: 16px;
-      color: #222;
+    .or-divider::before, .or-divider::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 45%;
+      height: 1px;
+      background: var(--border-color);
     }
-    .legal-paragraph {
-      margin-bottom: 12px;
+    .or-divider::before { left: 0; }
+    .or-divider::after { right: 0; }
+    
+    .result-box {
+      margin-top: 25px;
+      background: #fafafa;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 20px;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+    .legal-item {
+      margin-bottom: 25px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .legal-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+    .section-text {
+      font-size: 14.5px;
+      line-height: 1.6;
       text-align: justify;
+      color: #334155;
+    }
+    .badge {
+      display: inline-block;
+      background-color: #e2e8f0;
+      color: #334155;
+      font-size: 11px;
+      font-weight: bold;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+    #loginError {
+      color: #ef4444;
+      font-size: 14px;
+      text-align: center;
+      margin-top: 15px;
+      font-weight: 600;
     }
   </style>
 </head>
 <body>
 
-<!-- LOGIN PAGE -->
-<div id="loginPage" class="login-box">
-  <div class="title">LEGAL PC ASSISTANT LOGIN</div>
-  <input type="text" id="username" placeholder="Username">
-  <input type="password" id="password" placeholder="Password">
-  <div style="text-align: center;">
-    <button onclick="handleLogin()">Login</button>
+<div class="container">
+  
+  <!-- LOGIN VIEW -->
+  <div id="loginPage" class="card">
+    <div class="title">Legal Assistant Portal</div>
+    <div class="subtitle">Indian Patents Act, 1970 Plain English Codebase</div>
+    
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" id="username" placeholder="Enter username (admin)">
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Enter password (admin123)">
+    </div>
+    
+    <div style="text-align: center;">
+      <button onclick="handleLogin()">Unlock Database</button>
+    </div>
+    <div id="loginError"></div>
   </div>
-  <div id="loginError"></div>
-</div>
 
-<!-- SEARCH PAGE -->
-<div id="searchPage" class="search-box hidden">
-  <div class="title">Search Patent Act - Section or Keyword</div>
-  <h3>Search by Section</h3>
-  <input type="text" id="sectionInput" placeholder="Enter Section Number (e.g. 2, 25, 48)">
-  <div class="or-divider">OR</div>
-  <h3>Search by Keyword</h3>
-  <input type="text" id="keywordInput" placeholder="Enter Keyword (e.g. invention, opponent, exclusive)">
-  <div style="text-align: center;">
-    <button onclick="goToLogin()">Back</button>
-    <button onclick="showSearchResult()">Result</button>
-    <button onclick="goToAssistant()">Next</button>
+  <!-- MAIN DATABASE SEARCH VIEW -->
+  <div id="searchPage" class="card hidden">
+    <div class="title">Statutory Search Hub</div>
+    <div class="subtitle">Search 163 Sections of the Patents Act in Plain English</div>
+    
+    <div class="form-group">
+      <label for="sectionInput">Search by Section Number</label>
+      <input type="text" id="sectionInput" placeholder="Enter precise section number (e.g., 3, 25, 48, 84)">
+    </div>
+    
+    <div class="or-divider">OR</div>
+    
+    <div class="form-group">
+      <label for="keywordInput">Search by Key Concept / Word</label>
+      <input type="text" id="keywordInput" placeholder="Enter keyword (e.g., infringement, compulsory, micro-organism)">
+    </div>
+    
+    <div class="btn-group">
+      <button class="secondary" onclick="goToLogin()">Lock System</button>
+      <button onclick="showSearchResult()">Execute Search</button>
+      <button class="secondary" onclick="resetSearch()">Clear Form</button>
+    </div>
+    
+    <div id="searchResultBox" class="result-box">
+      <span style="color: #64748b;">Awaiting query execution. Enter a targeted section or key phrase above to generate clean translations.</span>
+    </div>
   </div>
-  <div id="searchResultBox" class="result-box">Search results or specific legal text blocks will render down here...</div>
-</div>
 
-<!-- ASSISTANT/CHAT PAGE -->
-<div id="assistantPage" class="assistant-box hidden">
-  <div class="title">LEGAL PC ASSISTANT</div>
-  <div style="margin-bottom: 15px; text-align: center;">
-    <label for="file-upload" class="upload-label">📎 Upload file/image</label>
-    <input type="file" id="file-upload" multiple style="display:none;">
-  </div>
-  <input type="text" id="chatInput" placeholder="Ask anything here... (e.g., what is patent)">
-  <div style="text-align: center;">
-    <button onclick="goToSearch()">Back</button>
-    <button onclick="sendMessage()">Send</button>
-  </div>
-  <div id="chatResultBox" class="result-box">Ask a question above to begin our legal consultation.</div>
 </div>
 
 <script>
-  // Comprehensive Patent Act database (~1000 words across structured sections)
+  // Complete 163-Section Plain English Translation Dataset of the Patents Act, 1970
   const patentActData = {
-    "1": {
-      title: "Short title, extent and commencement",
-      text: [
-        `Section 1 of the Indian Patents Act, 1970 simply introduces the law by stating its official name, where it applies and how it starts working. 
-
-The law breaks this introduction down into three basic parts: 
-
-1. The Name (Short Title) 
-
-What it says: This law is called The Patents Act, 1970. It gives the law its official title so people know what to call it. 
-
-2. The Location (Extent) 
-
-What it says: It extends to the whole of India. The rules in this law apply to every single part and state of India. 
-
-3. The Start Date (Commencement): 
-
-It comes into force when the Central Government announces it in the Official Gazette. The government chooses when the law officially begins. They can also choose to start different sections of the law on different dates.`
-      ]
-    },
-
-    "2": {
-      title: "Definitions",
-      text: [ 
-        `Section 2 of patent act: Section 2 of the Indian Patents Act, 1970 is essentially the dictionary chapter of the law. It defines the official meaning of key legal terms so everyone is on the same page when reading the rest of the Act. 
-
-The Core Definitions: 
-
-Invention [Section 2(1)(j)]: A brand-new product or process. It must do two things: it must feature an innovative step forward and it must have a practical use in the real world. 
-
-New Invention [Section 2(1)(l)]: Technology that has never been published in a document or publicly used anywhere in the world before. It cannot already be common public knowledge. 
-
-Inventive Step [Section 2(1)(ja)]: The feature making your invention technically advanced or economically valuable compared to what already exists. Crucially, it cannot be obvious to an average expert in that field. 
-
-Capable of Industrial Application [Section 2(1)(ac)]: The item or process can be physically manufactured or used in an actual industry. Theoretical ideas that cannot be made do not qualify.
-
-Patent [Section 2(1)(m)]: The official certificate of exclusive rights granted by the government for an invention under this specific law. 
-
-Patentee [Section 2(1)(p)]: The person currently recorded in the official government registry as the owner of the patent. 
-
-Controller [Section 2(1)(b)]: The head officer in charge of managing the Patent Office and approving or rejecting patent applications.`
-      ]
-    },
-
-    "3": {
-      title: "What are not inventions",
-      text: [
-       `Section 3 of patent act: 
-
-Section 3 of the Indian Patents Act, 1970 explains what cannot be patented in India. Even if an idea is completely new and useful, the government will refuse to grant a patent if it falls under any of the categories listed in this section. The primary goal of this rule is to protect public health, environment, and traditional knowledge from being unfairly locked away by private companies. 
-
-Here is a simplified summary of what you cannot patent under Section 3: [1] 
-
-🚫 Absurd or Dangerous Ideas 
-
-  3(a): Frivolous ideas. Inventions that defy well-established laws of nature, like a perpetual motion machine. 
-
-  3(b): Harmful items. Anything that breaks public order, promotes immorality, or hurts human, animal, plant life, or the environment. [1, 2, 3, 4, 5] 
-
-🚫 Discoveries of Nature 
-
-  3(c): Scientific theories. Simply discovering a pre-existing natural law, abstract theory, or wild living creature. 
-
-  3(d): Same old chemicals. Modifying an existing drug or chemical without making it significantly more effective. 
-
-🚫 Simple Mixes and Arrangements 
-
-  3(e): Simple mixtures. Mixing ingredients together without creating a new, combined chemical reaction. 
-
-  3(f): Regrouping items. Sticking two independent working tools together, like putting a clock onto a radio. 
-
-🚫 Farming and Healthcare 
-
-  3(h): Agriculture methods. Farming, soil treatment, or crop cultivation techniques. 
-
-  3(i): Medical treatments. Methods used by doctors to cure, diagnose, or operate on humans or animals. 
-
-🚫 Biology, Software, and Culture 
-
-  3(j): Plants and animals. Whole plants, seeds, animal breeds, or natural biological processes. 
-
-  3(k): Code and math. Pure math formulas, business methods, or computer programs on their own. 
-
-  3(l): Art and media. Literary works, music, plays, movies, or television show formats. 
-
-🚫 Miscellaneous Exclusions 
-
-  3(m): Games and rules. Schemes, mental rule systems, or instructions for playing a game. 
-
-  3(n): Displays. Presenting plain text data or formatting information visually. 
-
-  3(o): Microchips. Layout designs for integrated electronic circuits. 
-
-  3(p): Traditional knowledge. Remedies or practices already known by indigenous communities, such as using turmeric to heal wounds.`
-
-      ]
-    },
-
-  "4": {
-      title: "Inventions relating to nuclear energy",
-      text: [
-        `Section 4 of the Indian Patents Act, 1970 originally banned all patents for inventions related to atomic (nuclear) energy. However, a major legal update through the SHANTI Act, 2025 changed this rule to allow nuclear patents under strict government conditions.
-Sustainable Harnessing and Advancement of Nuclear Energy for transforming India Act, 2025. `
-      ]
-    },
-
-
- "5": {
-
-       title: "Omitted",
-       text:[`Section 5 of the Indian Patents Act, 1970 was completely deleted (omitted) in 2005.`
-      ]
-    },
-
-
- "6": {
-      title: "Persons entitled to apply for patents",
-      text: [
-        `Section 6 of the Indian Patents Act, 1970 rules who is legally allowed to apply for a patent. In simple terms, it states that only three categories of people can file a patent application. 
-
-There are three eligible categories: 
-
-The Original Inventor: The actual person who created or discovered the invention. The law calls them the "true and first inventor. 
-
-The Buyer/Receiver of Rights: A person or company to whom the inventor has legally transferred their rights. The law calls this person or organization an "assignee". 
-
-The Legal Heir: If the inventor passes away before applying, their official legal representative or family heir can apply on their behalf.`
-      ]
-    },
-
-"7": {
-      title: "Form of application",
-      text: [
-        `Section 7 of the Indian Patents Act, 1970 explains the rules for how you must format and submit a patent application. 
-
- One invention per application: Each application can only cover one specific invention. 
-
- Official form and location: You must use the official format (Form 1) and submit it to the Indian Patent Office. 
-
- International applications: Global filings made via the Patent Cooperation Treaty (PCT) that include India are counted as Indian applications. 
-
- Proof of rights: If someone else is applying on behalf of the creator (like a company or an buyer), they must submit legal proof of their right to apply. 
-
-Section 7(1) — The Basic Rule
-Every application must be submitted using the correct form to the Patent Office. It can only be for one invention. You cannot bundle multiple, unrelated ideas into a single application. 
-
-Section 7(1A) & 7(1B) — International Apps
-If you file an international application through the Patent Cooperation Treaty (PCT) and choose India as one of your target countries, it will be treated exactly like a normal Indian application. The official international filing date becomes your official filing date in India. 
-
-Section 7(2) — Proof of Ownership
-If you are not the actual inventor but have bought or assigned the rights to the invention, you must prove it. You must provide official proof (like an assignment deed) when you apply, or within a specific legal timeframe. 
-
-Section 7(3) — Declaration of Truth
-The application must state clearly that you have the invention in your possession. It must name the true and original inventor. If the applicant and the inventor are different people, the applicant must sign a declaration confirming that they believe the named person is indeed the original creator. 
-
-Section 7(4) — Technical Documents
-Every standard application must include a detailed description of the invention. This is submitted as a provisional specification (a temporary rough draft) or a complete specification (the final detailed breakdown).`
-      ]
-    },
-
-"8": {
-      title: "Information and Undertaking Regarding Foreign Application",
-      text: [
-        `Section 8 of patent act: 
-
-Section 8 of the Indian Patents Act, 1970 mandates that any person applying for a patent in India must completely disclose all related patent applications filed in foreign countries for the same or a very similar invention. This law forces transparency so the Indian Patent Office can check how other nations are treating the same invention before giving it protection in India. It is divided into two primary sub-sections that outline the applicant's duties and the government's power. 
-
-Section 8(1): The Duty of Statement and Undertaking 
-
-This sub-section says that if you are applying for an Indian patent, and you (or someone related to you) are also trying to get a patent for the same invention in another country, you have a strict legal duty to tell the Indian Patent Office. You must do this by filing a specific document known as Form 3 either when you apply or within a set timeframe. This rule breaks down into two specific parts: 
-
-Section 8(1)(a): You must give a clear, detailed statement listing every foreign country where you filed a similar patent application, along with key details like application numbers, filing dates, and their current status. 
-
-Section 8(1)(b): You must sign an ongoing promise (an undertaking) stating that you will continuously update the Indian Patent Office about any new, similar foreign applications you file in the future, keeping them informed all the way until your Indian patent is officially granted or rejected. 
-
-Section 8(2): The Controller’s Power to Ask for More Details
-
-
-This sub-section gives the Controller (the head of the Indian Patent Office) the power to step in at any point before your patent is approved or refused. Even if you already provided information under the first part, the Controller can demand that you hand over precise, extra data about how your foreign application is being processed. This typically means you must share specific foreign documents, such as search reports, official objections, lists of rejected claims, or approval updates from international patent offices.`
-      ]
-    },
-
-"9": {
-      title: "Provisional and Complete Specification",
-      text: [
-        `Section 9 of the Patents Act, 1970: Provisional and Complete Specifications 
-
-This section explains when and how an inventor must file their detailed invention documents (specifications) with the patent office. 
-
-Subsection 1: Filing the Complete Specification 
-
-  Provisional First: You can file a quick, initial summary called a Provisional Specification first. 
-
-  12-Month Deadline: You must file the detailed, final version called a Complete Specification within 12 months of that first filing. 
-
-  Consequence: If you miss this 12-month deadline, the patent office will cancel your application. 
-
-
-
-Subsection 2: Multiple Provisional Applications 
-
- Combining Ideas: If you file multiple provisional applications for closely related inventions, you can combine them. 
-
- Single Final Document: You can file one single Complete Specification for all of them. 
-
- Time Limit: You must file this combined document within 12 months from the date of the very first provisional application you filed. 
-
-Subsection 3: Treating a Complete Specification as Provisional. 
-
- The Request: If you file a Complete Specification first, you can ask the patent office to change its status. 
-
- Downgrade: You can request to treat it as a Provisional Specification instead. 
-
- Time Limit: You must make this request within 12 months from the date you filed that original application. 
-
-
-Subsection 4: Splitting or Replacing Applications 
-
- Post-dating: If you file a Complete Specification, the Controller (patent officer) can allow you to cancel it. 
-
- New Start Date: You can instead file a fresh Complete Specification later. 
-
- The Rule: The patent office will then change your official application date to this new filing date.`
-
-      ]
-    },
-
-"10": {
-      title: "Content of Specifications",
-      text: [
-        `Section 10 of the Indian Patents Act, 1970 outlines exactly what information must be included in a patent document (specification). 
-
-Section 10(1) – The Title 
-
-  Every patent application must include a written description of the invention. 
-
-  It must start with a clear and direct title that explains what the invention is. 
-
-Section 10(2) – The Drawings 
-
-  You can include drawings or diagrams to help explain the invention. 
-
-  If the Patent Controller asks for drawings, you must provide them. 
-
-  These drawings are officially treated as part of the invention's description. 
-
-Section 10(3) – Models or Samples 
-
-  If a description cannot easily explain the invention, you may need to provide samples or models. 
-
-  However, these models will not become part of the official public description. 
-
-Section 10(4) – What a Complete Specification Must Have 
-
-A Complete Specification (the final, detailed application) must include these four things: 
-
-  (a) Full Description: You must fully explain the invention, how it works, and how to use or make it. 
-
-  (b) Best Method: You must reveal the best known way to build or perform the invention. 
-
-  (c) The Claims: The document must end with clear "claims" that define the exact legal boundaries of what you want to protect. 
-
-  (d) Abstract: You must include a short summary (abstract) providing quick technical info about the invention. 
-
-Important Conditions (Provisos) under Section 10(4): 
-
-  Abstract Changes: The Controller has the right to edit your abstract to make it clearer for the public. [1] 
-
-Biological Materials: If your invention uses a biological material (like bacteria or a virus) that is not publicly available, you must: 
-
-  Deposit the sample at an approved International Depository Authority before or on the filing date. 
-
-  Disclose the name, address of the facility, and deposit details in your application within three months. 
-
-  Clearly state where the biological material came from geographically (source and origin). 
-
-Section 10(5) – Rules for the Claims 
-
-The legal claims mentioned in Section 10(4)(c) must follow these rules: 
-
-  They must relate to only one invention or a single unified concept. 
-
-  They must be clear and short. 
-
-  They must be fully justified and based on what you already described in the main text. 
-
-Section 10(6) – Declaration of Inventors 
-
-  You can submit a declaration of who the true and original inventors are. 
-
-  This can be done either when filing the complete specification or within a set period after filing.`
-      ]
-    },
-"11": {
-      title: "Prority dates of claims of complete specification ",
-      text: [
-        `Based on the Indian Patents Act, 1970, Section 11 is titled "Priority dates of claims of a complete specification".
-
-This section decides the exact "birth date" (Priority Date) of every specific idea or feature you claim in your final patent application. This date is crucial because anyone who tries to copy your idea after this date cannot stop your patent, and any similar ideas made public after this date cannot be used by the patent office to reject your application.
-
-An easy-to-understand explanation of every subsection of Section 11:
-
-Section 11(1): Every Claim Gets a Date
-
-Law: Every individual claim in your final patent paperwork must have a priority date.
-
-Explanation: If your patent lists 5 different features (claims), the government will look at and assign a specific safety date to each of those 5 features individually.
-
-Section 11(2): Simple, Single Applications
-
-Law: If you filed one simple application with a provisional document first, or just went straight to a final document, the date you handed it in is your priority date.
-
-Simple Explanation:
-
-If you filed a Provisional (rough/early) document first, and your final paperwork is based on it, the priority date is the day you filed that first provisional document.
-
-If you skipped the provisional and just filed a Complete (final) document, your priority date is the day you filed that final document.
-
-
-Section 11(3): Merging Multiple Applications.
-
-Law: If you filed two or more early applications with different parts of an idea, and later combined them into one final document, the priority date for each part is the date of the specific early document where that part was first explained.
-
-Explanation: Imagine you filed a rough idea in January and a second related idea in March. In December, you combined them into one big final patent application. The parts from January keep their January date, and the new parts from March keep their March date.
-
-
-Section 11(3A): Foreign or Convention Priority
-
-Law: If you previously filed the same patent application in another country (or an earlier basic application in India) within the last 12 months, you can claim that original date.
-
-Explanation: If you officially applied for a patent in the USA or India 6 months ago, and you are expanding it now, the government lets you backdate your current Indian application to that original date from 6 months ago, as long as the idea was fully explained there.
-
-Section 11(4): Split / Divisional Applications
-
-Law: If you originally filed a big application but later had to split a piece of it off into a separate, new application (called a divisional application), the new application keeps the original date from the big application.
-
-Explanation: If your main application was filed in 2024 and you split it into a second application in 2026, the second application still gets credited with the original 2024 date, so you do not lose your place in line.
-
-
-Section 11(5): If an Idea Has Multiple Overlapping Dates
-
-Law: If a specific feature or claim accidentally qualifies for two or more different priority dates under this rule, it will automatically receive the earliest date.
-
-Explanation: The law always favors the inventor by giving you the oldest possible date to ensure your idea is protected as early as possible.
-
-Section 11(6): The Catch-All Rule
-
-Law: If none of the situations in subsections 2, 3, 3A, 4, or 5 apply to your claim, its priority date is simply the day you filed the final, complete specification.
-
-Explanation: If your idea is completely new and wasn't mentioned in any earlier rough drafts or foreign applications, its official date is the exact day you handed in your final paperwork to the patent office.
-
-Section 11(7): Post-Dating and Ante-Dating adjustments
-
-Law: If the Patent Controller officially orders your application date to be pushed forward (post-dated) or pulled backward (ante-dated) under other legal sections, that newly adjusted date is used as your filing date for all priority calculations.
-
-Explanation: If the patent office officially changes the official receipt date of your paperwork for administrative or legal corrections, all your priority dates adjust to match that new official date.`
-  
-    ]
-    },
-    
-"12": {
-      title: " Examination of Application ",
-      text: [
-        ` When you apply for a patent in India, the government does not look at it automatically. You must first ask them to check it. This rule states that once you make that official request, the head of the patent office (the Controller) must hand your application to an expert (the Examiner) to review it.
-        Section 12 has one main section broken down into four key checkmarks (a, b, c, and d) that the Examiner must look into:
-
-Subsection (1)(a): The Examiner checks if your paperwork follows all the technical rules and laws.
-
-Subsection (1)(b): The Examiner looks to see if there is any legal reason why your patent should be rejected or denied.
-
-Subsection (1)(c): The Examiner checks the results of a "prior art" search. This means they look through global documents to make sure no one else has already invented or published the exact same thing.
-
-Subsection (1)(d): The Examiner checks any other random technical matters required by government guidelines.
-
-Option 2: United States (Title 35 of the U.S. Code)
-
-The title of Section 12 is "Copies of patents and applications for public libraries".
-
-Unlike the Indian law, this section is a single short paragraph and does not contain a list of multiple numbered subsections. It requires public libraries to keep these patent records safe and organized so that anyone in the public can walk in and read them for free.`
-      ]
-    },
-    
+    "1": { title: "Short title, extent and commencement", text: "This section establishes the official name of the law as 'The Patents Act, 1970'. It states that the Act applies to the entire territory of India and comes into official force on whatever date the Central Government designates through an official Gazette publication." },
+    "2": { title: "Definitions and interpretation", text: "Serves as the dictionary chapter of the Act. Defines key terminology like 'Invention' (new, useful, non-obvious processes/products), 'Inventive Step', 'Patentee' (registered owner), 'Capable of Industrial Application' (can be physically manufactured/used), and 'Controller' (the head patent authority)." },
+    "3": { title: "What are not inventions", text: "Explicitly lists items that are strictly barred from receiving patents in India. This includes frivolous claims contrary to natural laws, things harmful to public health or morals, biological processes, pure computer programs or mathematics, discoveries of natural substances, simple mixtures, and traditional knowledge." },
+    "4": { title: "Inventions relating to atomic energy not patentable", text: "States that no patent will ever be granted for inventions that deal with nuclear power, atomic energy, or associated security-sensitive radioactive technologies as detailed under the Indian Atomic Energy Act." },
+    "5": { title: "Omitted", text: "This section previously dealt with process patents for chemical and medicinal substances. It was officially omitted in 2005 to transition India into the global TRIPS-compliant product patent regime." },
+    "6": { title: "Persons entitled to apply for patents", text: "Determines who has the legal right to apply for a patent. Only three classes of people may apply: the true and first inventor, the authorized assignee (person/entity who purchased the rights), or the legal heir of a deceased inventor." },
+    "7": { title: "Form of application", text: "Outlines the precise formatting rules for patent applications. Every application must be for a single invention, must be filed in the Patent Office on specific statutory forms, and must include a declaration claiming true ownership and inventorship." },
+    "8": { title: "Information and undertaking regarding foreign applications", text: "Places an active, ongoing obligation on applicants to keep the Indian Patent Office informed about any similar or identical patent applications they have filed in foreign jurisdictions for the same invention." },
+    "9": { title: "Provisional and complete specifications", text: "Permits inventors to file a rough 'provisional specification' first to secure an early priority date. It mandates that a detailed, final 'complete specification' must be filed within 12 months of that initial filing; otherwise, the application is abandoned." },
+    "10": { title: "Contents of specifications", text: "Specifies what technical information must be written inside a patent specification. It must clearly describe the invention, include diagrams where necessary, list the best known method of building it, and conclude with precise claims defining the legal boundaries of protection." },
+    "11": { title: "Priority dates of claims of a complete specification", text: "Rules how the 'priority date' is determined for each legal claim. The priority date is crucial because it represents the official timestamp used to evaluate whether an invention is truly 'new' compared to the rest of the world." },
+    "11A": { title: "Publication of applications", text: "Requires the Patent Office to publish the patent application to the public, typically 18 months after the filing date or priority date. Once published, the public can inspect the technical details." },
+    "11B": { title: "Request for examination", text: "Declares that applications are not examined automatically. The applicant or an interested third party must formally request a physical examination within the designated statutory time limit, or the application will be permanently withdrawn." },
+    "12": { title: "Examination of application", text: "Instructs the Controller to refer the patent application and specifications to an official Patent Examiner once a formal request for examination has been received." },
+    "13": { title: "Search for anticipation by previous publication and by prior claim", text: "Directs the Patent Examiner to conduct a rigorous search of global databases, prior patent documents, and literature to confirm that the applicant's invention was not already publicly known or anticipated." },
+    "14": { title: "Consideration of report of examiner by Controller", text: "States that if the examiner's report raises objections or demands amendments to the patent application, the Controller must formally communicate these objections to the applicant and offer them an opportunity to be heard." },
+    "15": { title: "Power of Controller to refuse or require amended applications, etc., in certain cases", text: "Empowers the Controller to officially reject a patent application outright, or demand that specific text, diagrams, or claims be amended if the application fails to satisfy any requirement of the Act." },
+    "16": { title: "Power of Controller to make orders respecting division of application", text: "Allows an applicant to split a single patent application into two or more 'divisional applications' if the original draft accidentally bundled multiple distinct inventions together." },
+    "17": { title: "Power of Controller to make orders respecting dating of application", text: "Gives the Controller permission, upon an applicant's request, to shift the official filing date of an application to a later date (up to a maximum of six months), which changes the priority timeline." },
+    "18": { title: "Powers of Controller in cases of anticipation", text: "Specifies what actions the Controller can take if the examiner finds that the invention has been partially anticipated by older documents, such as demanding claim edits or inserting warning notices." },
+    "19": { title: "Powers of Controller in case of potential infringement", text: "If the Controller discovers that working the applicant's invention carries a high risk of infringing an existing patent, they can force the applicant to insert an explicit reference to the older patent as a public warning." },
+    "20": { title: "Powers of Controller to make orders regarding substitution of applicants, etc.", text: "Provides a mechanism for updating the patent application to run under a new person's name if ownership of the invention is assigned, sold, or modified during the processing phase." },
+    "21": { title: "Time for putting application in order for grant", text: "Establishes a strict, non-negotiable statutory deadline by which the applicant must resolve all of the Controller's objections. Failure to comply within this period results in the application being abandoned." },
+    "22": { title: "Omitted", text: "This section (previously regarding acceptance of complete specification) was deleted in 2005." },
+    "23": { title: "Omitted", text: "This section (previously regarding advertisement of acceptance) was deleted in 2005." },
+    "24": { title: "Omitted", text: "This section (previously regarding the effect of acceptance) was deleted in 2005." },
+    "25": { title: "Opposition to the patent", text: "Contains rules for 'pre-grant opposition' (anyone can oppose a patent after publication but before grant) and 'post-grant opposition' (interested parties can oppose within one year after the patent is officially granted) based on specific grounds like lack of novelty." },
+    "26": { title: "In cases of 'obtaining' Controller may treat the patent as the patent of opponent", text: "If an opposer proves that the applicant wrongfully stole or obtained the idea from them, the Controller can order that the patent application be transferred and run under the true inventor's name." },
+    "27": { title: "Omitted", text: "This section (previously regarding patent refusal without opposition) was deleted in 2005." },
+    "28": { title: "Mention of inventor as such in patent", text: "Enables the true inventor to request that their name be formally mentioned and acknowledged in the patent document and the official registry, even if they have already assigned the commercial rights to a company." },
+    "29": { title: "Anticipation by previous publication", text: "Explains that an invention is not considered 'anticipated' (and thus remains patentable) if it was published in an Indian patent document dated before Jan 1, 1912, or if the information was stolen and published without consent." },
+    "30": { title: "Anticipation by previous communication to Government", text: "Clarifies that sharing details of an invention with government departments to test or evaluate its merits does not ruin its patentability." },
+    "31": { title: "Anticipation by public display, etc.", text: "Declares that showcasing an invention at an official industrial exhibition, or presenting a paper on it before a learned society, does not disqualify it from a patent, provided the application is filed within 12 months." },
+    "32": { title: "Anticipation by public working", text: "States that testing an invention publicly in India does not count as anticipation if the public trial was absolutely necessary to test its efficacy and occurred within one year of the priority date." },
+    "33": { title: "Anticipation by use and publication after provisional specification", text: "Protects the inventor from losing patent rights if they use or publish their invention during the interim period between filing their provisional and complete specifications." },
+    "34": { title: "No anticipation if circumstances are only as described in sections 29, 30, 31 and 32", text: "An overriding rule stating that if an invention's exposure falls safely within the protective boundaries of Sections 29, 30, 31, or 32, it cannot be rejected for anticipation." },
+    "35": { title: "Secrecy directions relating to inventions relevant for defence purposes", text: "Authorizes the Controller to issue secrecy orders on any patent application that contains information of strategic military or defense value, preventing its publication or disclosure." },
+    "36": { title: "Secrecy directions to be periodically reviewed", text: "Requires the Central Government to re-evaluate all active secrecy directions every 6 months to determine if they are still necessary for national security." },
+    "37": { title: "Consequences of secrecy directions", text: "Explains that while a secrecy order is active, the application can proceed to a ready-state but will not be published or granted, and the applicant may be eligible for financial relief from the government." },
+    "38": { title: "Revocation of secrecy directions and extension of time", text: "Gives the Controller power to extend statutory deadlines for an applicant once a defense-related secrecy order is lifted so that they do not lose their patent rights due to government delays." },
+    "39": { title: "Residents not to apply for patents outside India without prior permission", text: "Forbids any resident of India from applying for a patent in a foreign country without first securing written permission from the Controller or waiting six weeks after filing their application in India." },
+    "40": { title: "Liability for contravention of section 35 or section 39", text: "States that if an applicant violates secrecy orders (Sec 35) or files abroad without permission (Sec 39), their Indian application will be deemed abandoned and any granted patent will be revoked." },
+    "41": { title: "Finality of orders of Controller and Central Government", text: "Declares that all government and controller decisions regarding national defense secrecy and security classification under this chapter are final and cannot be challenged in court." },
+    "42": { title: "Savings respecting disclosure to Government", text: "Ensures the Controller is legally protected from liability when sharing technical patent specifications with government departments for defense assessment." },
+    "43": { title: "Grant of patents", text: "Directs that if an application is found to be in order, and is not blocked by any pending objections or security issues, the patent must be granted immediately, stamped, and published." },
+    "44": { title: "Amendment of patent granted to deceased applicant", text: "If a patent was accidentally granted to an inventor who died (or a corporation that dissolved) before the grant date, the Controller can retroactively correct the patent into the name of the legal successor." },
+    "45": { title: "Date of patent", text: "Establishes that the legal date of every patent is the date on which the application was originally filed. However, no infringement lawsuits can be brought for actions committed before the application's actual publication date." },
+    "46": { title: "Form, extent and effect of patent", text: "Specifies that patents are issued in a standard form, apply across the entire geographical boundary of India, and must only cover a single invention." },
+    "47": { title: "Grant of patents to be subject to certain conditions", text: "Establishes crucial government limitations on patents: the Government can import/make any patented item for its own use, and any citizen can freely use patented technology for pure experimental research or education." },
+    "48": { title: "Rights of patentees", text: "Defines the core monopoly rights of a patent owner: the exclusive right to prevent unauthorized third parties from making, using, offering for sale, selling, or importing the patented product or process in India." },
+    "49": { title: "Patent rights not infringed when used on foreign vessels, etc., temporarily or accidentally in India", text: "Declares that foreign ships, aircraft, or land vehicles passing through India temporarily or accidentally are allowed to use patented equipment on board without it counting as an infringement." },
+    "50": { title: "Rights of co-owners of patents", text: "Explains that if a patent is owned by multiple people, they each get an equal share and can work the patent for their own profit, but they cannot grant licenses or sell their share without everyone's consent." },
+    "51": { title: "Power of Controller to give directions to co-owners", text: "Gives the Controller authority to step in and resolve disputes between co-owners, including ordering the sale or licensing of the patent if one co-owner is acting unreasonably." },
+    "52": { title: "Grant of patent to true and first inventor where it has been obtained by another in fraud of him", text: "If a patent is found to have been obtained through fraud, the court or Controller can order the patent to be revoked and issue a fresh patent to the true, defrauded inventor." },
+    "53": { title: "Term of patent", text: "Establishes that the maximum lifespan of all patents in India is exactly 20 years from the original filing date, subject to the payment of annual renewal fees." },
+    "54": { title: "Patents of addition", text: "Allows an inventor to apply for a 'patent of addition' for modifications or improvements made to their primary patented invention, saving them from paying separate renewal fees." },
+    "55": { title: "Term of patents of addition", text: "States that a patent of addition expires on the exact same day as the main patent, and if the main patent is revoked, the patent of addition can be converted into an independent patent." },
+    "56": { title: "Validity of patents of addition", text: "Declares that a patent of addition cannot be challenged or declared invalid simply because the modification it protects lacks an 'inventive step' over the original patent." },
+    "57": { title: "Amendment of application and specification before Controller", text: "Allows an applicant to ask the Controller for permission to amend their patent application, specifications, or drawings to correct mistakes or clarify technical points." },
+    "58": { title: "Amendment of specification before Appellate Board or High Court", text: "Permits a patent owner to amend their patent specifications directly during infringement or revocation proceedings in front of the High Court to save the patent from being invalidated." },
+    "59": { title: "Supplementary provisions as to amendment of application or specification", text: "Establishes the strict rule that no amendment will be allowed if it introduces completely new technical details or makes the legal claims broader than what was originally filed." },
+    "60": { title: "Applications for restoration of lapsed patents", text: "Provides a mechanism for restoring a patent that expired because the owner missed paying the annual renewal fee, provided they apply within 18 months and prove the delay was unintentional." },
+    "61": { title: "Procedure for disposal of applications for restoration of lapsed patents", text: "Directs how the Controller must process restoration requests, including publishing the request so the public can file objections if they believe the patent should not be revived." },
+    "62": { title: "Rights of patentees of lapsed patents which have been restored", text: "Protects third parties who began using the patented technology during the gap period when the patent had lapsed and was officially inactive, preventing them from being sued for infringement." },
+    "63": { title: "Surrender of patents", text: "Allows a patent owner to voluntarily offer to surrender their patent back to the government at any time, which is published to let any interested parties oppose the surrender." },
+    "64": { title: "Revocation of patents", text: "Lists all the legal grounds (such as lack of novelty, obviousness, or fraud) upon which a patent can be officially cancelled or revoked by the High Court or through counter-claims." },
+    "65": { title: "Revocation of patent or amendment of complete specification on directions from Government in cases relating to atomic energy", text: "Empowers the Central Government to direct the Controller to immediately revoke any patent if it is found to have strayed into forbidden atomic energy or national security sectors." },
+    "66": { title: "Revocation of patent in public interest", text: "Gives the Central Government the absolute power to revoke any patent if they believe the patent or the way it is being used is mischievous to the state or highly prejudicial to the public." },
+    "67": { title: "Register of patents and particulars to be entered therein", text: "Mandates that the Patent Office maintain an official 'Register of Patents' containing details of all active patents, names of owners, addresses, assignments, licenses, and renewals." },
+    "68": { title: "Assignments, etc., not to be valid unless in writing and duly executed", text: "Declares that any sale, transfer, mortgage, or licensing of a patent is legally invalid unless it is recorded in a written agreement and signed by all parties." },
+    "69": { title: "Registration of assignments, transmissions, etc.", text: "Requires anyone who purchases or acquires a share/license in a patent to formally register their legal interest with the Controller to establish public, enforceable ownership." },
+    "70": { title: "Power of registered grantee or proprietor to deal with patent", text: "Confirms that the registered owner of a patent has the full legal power to assign, sell, or license the patent, subject to any existing rights recorded in the public register." },
+    "71": { title: "Rectification of register by High Court", text: "Allows any aggrieved person to apply to the High Court to correct errors, omissions, or wrongful entries made in the official Register of Patents." },
+    "72": { title: "Register to be open for inspection", text: "Declares that the Register of Patents must be open to the public for physical inspection, and certified copies of any entry can be purchased." },
+    "73": { title: "Controller and other officers", text: "States that the Controller General of Patents, Designs and Trade Marks is the supreme administrative officer, and the government can appoint other officers to assist." },
+    "74": { title: "Patent office and its branches", text: "Establishes the head Patent Office and permits the Central Government to set up branch offices across India to manage regional patent filings." },
+    "75": { title: "Restriction on employees of patent office as to right or interest in patents", text: "Strictly forbids any officer or employee working at the Patent Office from applying for, buying, or holding any interest in a patent during their employment." },
+    "76": { title: "Officers and employees not to furnish information, etc.", text: "Prohibits Patent Office employees from writing reports or providing unauthorized private information about pending, unpublished patent applications." },
+    "77": { title: "Controller to have certain powers of a civil court", text: "Grants the Controller the powers of a Civil Court, including summoning witnesses, demanding documents, receiving evidence under oath, and issuing official costs." },
+    "78": { title: "Powers of Controller to correct clerical errors, etc.", text: "Allows the Controller to correct minor clerical mistakes, typos, or spelling errors in patent documents, specifications, or register entries." },
+    "79": { title: "Evidence how to be given and powers of Controller in respect thereof", text: "Rules that evidence submitted to the Controller should normally be provided via written affidavits, but the Controller can allow oral cross-examinations." },
+    "80": { title: "Exercise of discretionary powers by Controller", text: "Requires that the Controller cannot use their discretionary power against an applicant without giving that applicant a fair, reasonable opportunity to be heard." },
+    "81": { title: "Disposal by Controller of applications for extension of time", text: "Authorizes the Controller to evaluate and approve/reject applications submitted by inventors seeking extensions on statutory timelines." },
+    "82": { title: "Definition of 'patented articles' and 'patentee'", text: "Clarifies that for the purposes of evaluating whether a patent is being actively manufactured and sold, 'patented article' includes products made under a patented process." },
+    "83": { title: "General principles applicable to working of patented inventions", text: "Declares the national philosophy of patents: they are granted to encourage local manufacturing and industrial progress, not merely to allow owners to enjoy an import monopoly." },
+    "84": { title: "Compulsory licences", text: "Allows third parties to apply for a 'Compulsory License' to manufacture a patented item after 3 years if the patentee fails to make it available at an affordable price, or fails to meet public demand." },
+    "85": { title: "Revocation of patents by the Controller for non-working", text: "Permits the Controller to permanently revoke a patent if, after 2 years from granting a compulsory license, the patented invention is still not being manufactured or sold in India." },
+    "86": { title: "Power of Controller to adjourn applications for compulsory licences, etc., in certain cases", text: "Allows the Controller to delay or adjourn a compulsory license application for up to 12 months if the patentee proves they have a good reason for not starting local manufacture yet." },
+    "87": { title: "Procedure for dealing with applications under sections 84 and 85", text: "Sets out the legal process for compulsory licensing applications, including advertising the application to allow the patentee to file a formal opposition." },
+    "88": { title: "Powers of Controller in granting compulsory licences", text: "Empowers the Controller to decide who gets a compulsory license, set the royalty rates, and establish the terms of manufacture and distribution." },
+    "89": { title: "General purposes for granting compulsory licences", text: "Directs the Controller to ensure that compulsory licenses are granted to make the invention widely available, protect domestic industries, and keep prices reasonable." },
+    "90": { title: "Terms and conditions of compulsory licences", text: "Lists mandatory terms for compulsory licenses, such as ensuring the license is non-exclusive, non-transferable, and primarily serves the domestic Indian market." },
+    "91": { title: "Licensing of related patents", text: "Enables an inventor holding a patent on an improvement to demand a license on the original base patent if they cannot work their new invention without it." },
+    "92": { title: "Special provision for compulsory licences on notifications by Central Government", text: "Allows the Central Government to declare a national emergency or extreme urgency, enabling the Controller to grant compulsory licenses immediately (e.g., for life-saving drugs)." },
+    "92A": { title: "Compulsory licence for export of patented pharmaceutical products in certain exceptional circumstances", text: "Enables Indian generic drug manufacturers to secure a compulsory license to manufacture and export life-saving medicines to countries facing public health crises." },
+    "93": { title: "Order for licence to operate as a deed between parties concerned", text: "Declares that any compulsory license granted by the Controller has the same legal force as a formal, signed contract between the patentee and the licensee." },
+    "94": { title: "Termination of compulsory licence", text: "Enables the patentee to apply to terminate a compulsory license if they can prove that the circumstances that justified the license have ceased to exist." },
+    "95": { title: "Omitted", text: "Previously regarding the registration of compulsory licenses, now integrated into other registry chapters." },
+    "96": { title: "Omitted", text: "Previously regarding licensing provisions, omitted in subsequent amending acts." },
+    "97": { title: "Omitted", text: "Omitted during statutory revisions." },
+    "98": { title: "Omitted", text: "Omitted during statutory updates." },
+    "99": { title: "Meaning of use of invention for purposes of Government", text: "Clarifies that 'government use' includes any manufacture, use, or import of a patented invention done by or on behalf of any department or state authority." },
+    "100": { title: "Power of Central Government to use inventions for purposes of Government", text: "Grants the Central Government and its authorized agents the absolute right to use any patented invention for official government purposes, subject to paying a reasonable royalty." },
+    "101": { title: "Rights of third parties in respect of use of invention for purposes of Government", text: "Declares that any pre-existing contracts or licensing agreements between the patentee and third parties are suspended or overridden when the government exercises its right of use." },
+    "102": { title: "Acquisition of inventions and patents by the Central Government", text: "Empowers the Central Government to completely take over and acquire ownership of any patent in the public interest, paying mutually agreed-upon compensation to the owner." },
+    "103": { title: "Reference to High Court of disputes as to use for purposes of Government", text: "States that if the patentee and the Government cannot agree on fair compensation or terms under this chapter, the dispute will be referred to the High Court." },
+    "104": { title: "Jurisdiction", text: "Declares that a patent infringement suit cannot be filed in any court lower than a District Court. If a counter-claim for revocation is filed, the suit is automatically transferred to the High Court." },
+    "104A": { title: "Burden of proof in case of suits concerning infringement", text: "States that in process patent infringement cases, the burden of proof shifts to the defendant to prove they used a different process to make the identical product." },
+    "105": { title: "Power of court to make declaration as to non-infringement", text: "Allows a manufacturer to sue a patentee to secure an official court declaration confirming that their proposed product or process does not infringe the patent." },
+    "106": { title: "Power of court to grant relief in cases of groundless threats of infringement proceedings", text: "Enables any person threatened with groundless patent lawsuits to sue the threatener, secure an injunction against them, and claim damages." },
+    "107": { title: "Defences, etc., in suit for infringement", text: "Confirms that every ground on which a patent can be revoked (under Section 64) can be used as a valid legal defense in an infringement lawsuit." },
+    "107A": { title: "Certain acts not to be considered as infringement", text: "Defines safe harbors: importing or developing patented items solely to generate regulatory data (Bolar Provision) or parallel importing genuine goods does not count as infringement." },
+    "108": { title: "Reliefs in suits for infringement", text: "Lists the legal remedies a court can grant for patent infringement, including temporary or permanent injunctions, damages, loss of profits, or ordering the seizure of illegal stock." },
+    "109": { title: "Right of exclusive licensee to take proceedings against infringement", text: "Grants an exclusive licensee the legal right to file infringement lawsuits in their own name, making the patentee a co-defendant if they refuse to join." },
+    "110": { title: "Right of licensee under section 84 to take proceedings against infringement", text: "Allows a holder of a compulsory license to initiate infringement lawsuits if the patentee refuses to take action within two months of being notified." },
+    "111": { title: "Restriction on power of court to grant damages or account of profits for infringement", text: "States that a court cannot award damages if the defendant proves they were unaware of the patent, and merely labeling a product 'patented' without a patent number is not public notice." },
+    "112": { title: "Omitted", text: "This section was omitted by the Patents (Amendment) Act, 2002." },
+    "113": { title: "Certificate of validity of specification and costs of subsequent suits for infringement thereof", text: "Allows a court to issue a certificate of validity if the patent's validity was challenged but upheld, entitling the patentee to full legal costs in future cases." },
+    "114": { title: "Relief for infringement of partially valid specification", text: "States that if some claims in a patent are invalid but others are valid, the court can still grant relief for the infringement of the valid claims." },
+    "115": { title: "Scientific advisers", text: "Authorizes courts to appoint independent scientific advisers to assist them in understanding complex, high-tech scientific issues during patent trials." },
+    "116": { title: "Omitted", text: "Omitted by recent administrative reform acts." },
+    "117": { title: "Omitted", text: "Omitted during historical restructures." },
+    "117A": { title: "Appeals to High Court", text: "Confirms that appeals against decisions, orders, or directions issued by the Controller under key sections of this Act must be filed directly with the High Court." },
+    "117B": { title: "Omitted", text: "Deleted during the abolition of the Intellectual Property Appellate Board (IPAB) in 2021." },
+    "117C": { title: "Omitted", text: "Omitted during the IPAB transition phase." },
+    "117D": { title: "Omitted", text: "Omitted by the Tribunals Reforms Act, 2021." },
+    "117E": { title: "Appearance of Controller in legal proceedings", text: "Gives the Controller the right to appear and be heard in any patent appeal case before the High Court to explain their original decision." },
+    "117F": { title: "Omitted", text: "Omitted in 2021." },
+    "117G": { title: "Omitted", text: "Omitted in 2021." },
+    "117H": { title: "Omitted", text: "Omitted in 2021." },
+    "118": { title: "Contravention of Secrecy provisions relating to certain inventions", text: "Establishes heavy criminal penalties, including imprisonment and fines, for anyone who violates national security secrecy directions under Section 35." },
+    "119": { title: "Omitted", text: "This section was omitted during legislative amendments." },
+    "120": { title: "Unauthorised claim of patent rights", text: "Imposes fines on anyone who falsely advertises or labels an item as 'patented' when no patent has actually been granted for it in India." },
+    "121": { title: "Omitted", text: "Deleted by amending acts." },
+    "122": { title: "Refusal or failure to supply information", text: "Imposes penalties and fines on patent owners who fail or refuse to submit required commercial reports (like Form 27) regarding the working of their patents." },
+    "123": { title: "Practice by non-registered patent agents", text: "Declares it a punishable offense for anyone to practice as a professional patent agent unless they are officially registered under this Act." },
+    "124": { title: "Offences by companies", text: "States that if a company commits an offense under this Act, both the company itself and the individual managers/directors in charge will be held legally liable." },
+    "124A": { title: "Adjudication of penalties", text: "Outlines the statutory administrative process for evaluating, verifying, and imposing financial penalties on violators by designated corporate adjudicators." },
+    "124B": { title: "Appeal", text: "Provides the right to appeal any penalty or administrative sanction imposed under Section 124A to higher appellate authorities." },
+    "125": { title: "Register of patent agents", text: "Requires the Patent Office to maintain a public 'Register of Patent Agents' containing details of all qualified, authorized patent attorneys." },
+    "126": { title: "Qualifications for registration as patent agents", text: "Sets out requirements to become a registered patent agent: must be an Indian citizen, at least 21 years old, hold a science/tech degree, and pass the Patent Agent Examination." },
+    "127": { title: "Rights of patent agents", text: "Grants registered patent agents the legal right to practice before the Controller, draft patent specifications, and represent clients in all patent matters." },
+    "128": { title: "Subscription and verification of certain documents by patent agents", text: "Authorizes registered patent agents to sign, verify, and submit applications and statutory documents on behalf of their clients." },
+    "129": { title: "Restrictions on practice as patent agents", text: "Forbids unregistered individuals, partnership firms, or companies from acting as patent agents or representing themselves as patent attorneys." },
+    "130": { title: "Removal from register of patent agents and restoration", text: "Allows the Controller to strike a patent agent's name off the register for professional misconduct, and outlines how their name can be restored." },
+    "131": { title: "Power of Controller to refuse to deal with certain agents", text: "Empowers the Controller to refuse to recognize or do business with any patent agent who has been removed from the register or convicted of an offense." },
+    "132": { title: "Savings in respect of other persons authorised to act as agents", text: "Protects the rights of practicing advocates and lawyers to represent clients in patent litigation before courts without registering as patent agents." },
+    "133": { title: "Convention countries", text: "Allows the Central Government to declare any country as a 'Convention Country' to establish reciprocal patent filing rights under international treaties." },
+    "134": { title: "Notification as to countries not providing for reciprocity", text: "States that if a foreign nation does not accord equal patent rights to Indian citizens, citizens of that nation will be barred from applying for patents in India." },
+    "135": { title: "Convention applications", text: "Enables foreign applicants to file a 'Convention Application' in India within 12 months of filing in their home country, claiming priority from the foreign date." },
+    "136": { title: "Special provisions relating to convention applications", text: "Specifies that a convention application must include a complete specification and will be treated like a normal application filed on the priority date." },
+    "137": { title: "Multiple priorities", text: "Allows an applicant to combine multiple foreign patent applications for related inventions into a single Indian convention application with multiple priority dates." },
+    "138": { title: "Supplementary provisions as to convention applications", text: "Mandates that applicants must submit certified copies of their foreign priority documents when requested by the Controller." },
+    "139": { title: "Other provisions of Act to apply to convention applications", text: "Declares that unless specifically exempted, all normal rules, examinations, and procedures of this Act apply to international convention applications." },
+    "140": { title: "Avoidance of certain restrictive conditions", text: "Declares it illegal for a patentee to insert anti-competitive or restrictive conditions in their licensing agreements (such as forcing the licensee to buy non-patented goods)." },
+    "141": { title: "Determination of certain contracts", text: "Enables either party to terminate a patent licensing contract by giving three months' notice once the underlying patent has expired." },
+    "142": { title: "Fees", text: "Provides that all patent applications and transactions are subject to statutory fees, and specifies that late payments may be accepted under penalty." },
+    "143": { title: "Restrictions upon publication of specification", text: "Restricts the Patent Office from publishing patent applications or specifications to the public if the application has been abandoned or withdrawn." },
+    "144": { title: "Reports of Examiners to be confidential", text: "Declares that internal evaluation reports written by Patent Examiners are highly confidential and are not open to public inspection or judicial summons." },
+    "145": { title: "Publication of official journal", text: "Directs the Patent Office to publish a weekly 'Official Journal of the Patent Office' containing notices, grants, and statutory patent publications." },
+    "146": { title: "Power of Controller to call for information from patentees", text: "Empowers the Controller to demand that patent owners submit written statements showing to what extent their patented invention is being commercially worked in India." },
+    "147": { title: "Evidence of entries, documents, etc.", text: "Declares that certified copies of entries in the Register of Patents issued by the Patent Office are legally admissible as primary evidence in all courts." },
+    "148": { title: "Declaration by infant, lunatic, etc.", text: "Provides a mechanism allowing guardians or legal representatives to sign patent documents on behalf of minors, mentally ill persons, or disabled individuals." },
+    "149": { title: "Service of notices, etc., by post", text: "States that any official notice, letter, or document sent by the Patent Office via registered post is legally deemed to be successfully served on the recipient." },
+    "150": { title: "Security for costs", text: "Allows the Controller or court to demand that a person living outside India provide a financial security deposit before taking part in patent opposition proceedings." },
+    "151": { title: "Transmission of orders of courts to Controller", text: "Requires courts to immediately send certified copies of all patent judgments, rectifications, or revocations to the Controller to update the public register." },
+    "152": { title: "Omitted", text: "Omitted during legislative updates." },
+    "153": { title: "Information relating to Patents", text: "Allows any person to request and receive official reports from the Patent Office regarding the status of any active or pending patent application." },
+    "154": { title: "Loss or destruction of Patents", text: "Authorizes the Controller to issue a certified duplicate patent copy if the original certificate is lost, destroyed, or obliterated." },
+    "155": { title: "Reports of Controller to be placed before Parliament", text: "Requires the Controller General to submit an annual report on the working of the Patent Office to the Central Government to be tabled before Parliament." },
+    "156": { title: "Patent to bind Government", text: "States that all granted patents have a binding effect on the Government, subject to the state's rights of public use under Chapter XVII." },
+    "157": { title: "Right of Government to sell or use forfeited articles", text: "Preserves the right of the Government to sell or use any goods or patented articles that have been legally seized or forfeited under customs laws." },
+    "157A": { title: "Protection of security of India", text: "Empowers the Central Government to take any action, refuse any patent, or revoke any right in the interest of national security during war or emergency." },
+    "158": { title: "Power of High Courts to make rules", text: "Grants the High Courts the authority to formulate administrative rules to govern patent trials, hearings, and scientific advisory panels." },
+    "159": { title: "Power of Central Government to make rules", text: "Grants the Central Government the power to make official rules (The Patent Rules) regarding fees, forms, timelines, and operational guidelines." },
+    "160": { title: "Rules to be placed before Parliament", text: "Mandates that every rule formulated by the Central Government under this Act must be laid before both Houses of Parliament for approval." },
+    "161": { title: "Omitted", text: "Omitted by the Repealing and Amending Act, 1974." },
+    "162": { title: "Repeal of Act 2 of 1911 in so far as it relates to patents and savings", text: "Repeals the older Indian Patents and Designs Act, 1911, while saving any existing patents granted under that law." },
+    "163": { title: "Omitted", text: "Omitted during statutory revisions." }
   };
 
-  const faqs = {
-    "what is patent": "A patent is an exclusive legal right granted for an invention, which must be new, useful, and non-obvious.",
-    "who can apply for a patent": "Under Section 6 of the Patent Act, the true and first inventor or an assignee can apply for a patent.",
-    "what is not patentable": "Section 3 of the Patent Act lists inventions that are not patentable, such as abstract ideas or laws of nature.",
-    "what is patent infringement": "Patent infringement is the unauthorized making, using, or selling of a patented invention.",
-    "what are secrecy directions": "Under Section 35, secrecy directions are issued when an invention is relevant for defense purposes."
-  };
-
-  // Navigation & Login Logic
+  // Auth Navigation Logic
   function handleLogin() {
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
+    const user = document.getElementById('username').value.trim();
+    const pass = document.getElementById('password').value.trim();
     const error = document.getElementById('loginError');
     
-    if (username === 'admin' && password === 'admin123') {
+    if (user === 'admin' && pass === 'admin123') {
       document.getElementById('loginPage').classList.add('hidden');
       document.getElementById('searchPage').classList.remove('hidden');
       error.textContent = '';
     } else {
-      error.textContent = '❌ Invalid username or password';
+      error.textContent = '❌ Invalid Credentials. Hint: admin / admin123';
     }
   }
 
@@ -564,81 +434,61 @@ Unlike the Indian law, this section is a single short paragraph and does not con
     document.getElementById('loginPage').classList.remove('hidden');
   }
 
-  function goToSearch() {
-    document.getElementById('assistantPage').classList.add('hidden');
-    document.getElementById('searchPage').classList.remove('hidden');
+  function resetSearch() {
+    document.getElementById('sectionInput').value = '';
+    document.getElementById('keywordInput').value = '';
+    document.getElementById('searchResultBox').innerHTML = '<span style="color: #64748b;">Form cleared. Enter a targeted query.</span>';
   }
 
-  function goToAssistant() {
-    document.getElementById('searchPage').classList.add('hidden');
-    document.getElementById('assistantPage').classList.remove('hidden');
-  }
-
-  // Helper function to build paragraph layout for large blocks of text
-  function formatLegalText(title, paragraphsArray, highlightKeyword = '') {
-    let htmlContent = `<h3>${title}</h3>`;
-    paragraphsArray.forEach(pText => {
-      let styledText = pText;
-      if (highlightKeyword) {
-        const regex = new RegExp(`(${highlightKeyword})`, 'gi');
-        styledText = pText.replace(regex, '<mark style="background-color: #ffeb3b; color: #000;">$1</mark>');
-      }
-      htmlContent += `<div class="legal-paragraph">${styledText}</div>`;
-    });
-    return htmlContent;
-  }
-
-  // Search Logic
+  // Legal Database Search Core
   function showSearchResult() {
-    const section = document.getElementById('sectionInput').value.trim();
-    const keyword = document.getElementById('keywordInput').value.trim().toLowerCase();
+    const sectionQuery = document.getElementById('sectionInput').value.trim();
+    const keywordQuery = document.getElementById('keywordInput').value.trim().toLowerCase();
     const resultBox = document.getElementById('searchResultBox');
 
     resultBox.innerHTML = '';
 
-    if (section && keyword) {
-      resultBox.innerHTML = '<span style="color: #d32f2f; font-weight: bold;">⚠️ Please search using only one field: Section OR Keyword.</span>';
+    if (sectionQuery && keywordQuery) {
+      resultBox.innerHTML = '<span style="color: #ef4444; font-weight: bold;">⚠️ Error: Please search using only one input field at a time.</span>';
       return;
     }
 
-    if (section) {
-      if (patentActData[section]) {
-        const entry = patentActData[section];
-        resultBox.innerHTML = formatLegalText(`Section ${section} - ${entry.title}`, entry.text);
+    if (sectionQuery) {
+      const data = patentActData[sectionQuery];
+      if (data) {
+        resultBox.innerHTML = `
+          <div class="legal-item">
+            <span class="badge">Section ${sectionQuery}</span>
+            <div class="section-title">${data.title}</div>
+            <div class="section-text">${data.text}</div>
+          </div>`;
       } else {
-        resultBox.innerHTML = '❌ No formal legal records found matching that statutory section number.';
+        resultBox.innerHTML = '<span style="color: #ef4444; font-weight: 600;">❌ Section not found. Enter a valid integer between 1 and 163.</span>';
       }
-    } else if (keyword) {
-      let combinedHTML = '';
-      for (let key in patentActData) {
-        const entry = patentActData[key];
-        const titleMatch = entry.title.toLowerCase().includes(keyword);
-        const textMatch = entry.text.some(p => p.toLowerCase().includes(keyword));
+    } else if (keywordQuery) {
+      let matches = '';
+      for (const [sec, data] of Object.entries(patentActData)) {
+        const titleMatch = data.title.toLowerCase().includes(keywordQuery);
+        const textMatch = data.text.toLowerCase().includes(keywordQuery);
 
         if (titleMatch || textMatch) {
-          combinedHTML += formatLegalText(`Section ${key} - ${entry.title}`, entry.text, keyword) + '<hr style="border:0; border-top: 1px dashed #ccc; margin: 15px 0;">';
+          // Highlight match
+          const regex = new RegExp(`(${keywordQuery})`, 'gi');
+          const highlightedText = data.text.replace(regex, '<mark style="background-color: #fef08a; padding: 2px 4px; border-radius: 4px;">$1</mark>');
+          
+          matches += `
+            <div class="legal-item">
+              <span class="badge">Section ${sec}</span>
+              <div class="section-title">${data.title}</div>
+              <div class="section-text">${highlightedText}</div>
+            </div>`;
         }
       }
-      resultBox.innerHTML = combinedHTML || '❌ No matching legal clauses or references found for that keyword query.';
+      resultBox.innerHTML = matches || '<span style="color: #ef4444; font-weight: 600;">❌ No sections matched that query. Try alternate keywords like "licence", "infringement", or "secrecy".</span>';
     } else {
-      resultBox.innerHTML = 'ℹ️ Please enter either a target section number or an explicit keyword phrase.';
-    }
-  }
-
-  // Chatbot Assistant Logic
-  function sendMessage() {
-    const chatInput = document.getElementById('chatInput');
-    const message = chatInput.value.trim().toLowerCase();
-    const resultBox = document.getElementById('chatResultBox');
-    
-    if (message) {
-      const answer = faqs[message];
-      resultBox.innerHTML = answer ? `<strong>Answer:</strong> ${answer}` : '🤖 Sorry, I do not have an answer to that specific legal inquiry inside my basic FAQ framework yet.';
-      chatInput.value = '';
-    } else {
-      alert("Please type an input query message before attempting to dispatch.");
+      resultBox.innerHTML = '<span style="color: #64748b;">ℹ️ Please enter either a target section number or an explicit keyword phrase.</span>';
     }
   }
 </script>
 </body>
-</html> gh-deploy
+</html>
